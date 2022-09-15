@@ -6,6 +6,11 @@ using namespace std;
 const int N = 1e5;
 vector<int> g[N];
 int dis[N], par[N], vis[N];
+
+void edge(int u, int v) {
+    g[u].pb(v);
+    g[v].pb(v);   //undirected graph
+}
 void bfs(int node) {
     queue<int> q;
     q.push(node), par[node] = -1;
@@ -41,8 +46,7 @@ int main() {
     cin >> n >> e;
     for(int i = 0; i < e; i++) {
         cin >> u >> v;
-        g[u].push_back(v);
-        g[v].push_back(u);
+        edge(u, v);
     }
     bfs(1);
     for(int i = 1; i <= n; i++) {
