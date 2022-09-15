@@ -8,8 +8,8 @@ vector<int> g[N];
 int dis[N], par[N], vis[N];
 
 void edge(int u, int v) {
-    g[u].pb(v);
-    g[v].pb(v);   //undirected graph
+    g[u].push_back(v);
+    g[v].push_back(u);   //undirected graph
 }
 void bfs(int node) {
     queue<int> q;
