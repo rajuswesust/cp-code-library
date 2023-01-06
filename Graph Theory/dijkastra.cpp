@@ -7,7 +7,7 @@ using namespace std;
 #define pll pair<ll, ll>
 
 const int N = 1e5 + 5;
-const int inf = 2e9;
+const ll inf = LONG_LONG_MAX;
 vector<pair<ll, ll>> g[N];
 
 int main() {
@@ -21,13 +21,6 @@ int main() {
         g[u].push_back({v, c});
         //g[v].push_back({u, c});
     }
-    for(int i = 1; i <= n; i++) {
-        cout << i << " : " << endl;
-        for(auto j: g[i]) {
-            cout << j.fi << ", " << j.se << endl;
-        }
-    }
-  
     //source = 1, destination = n
     priority_queue<pll, vector<pll>, greater<pll>> pq;
     pq.push({0, 1});    //(cost, node)
@@ -35,23 +28,23 @@ int main() {
     vector<int> prev(n+1);
     dis[1] = 0;
     while(!pq.empty()) {
-        pair<int, int> x = pq.top();
+        auto cur = pq.top();
         pq.pop();
-      
-        u = x.se;
-      
-        //cout << "#" << x.se << " " << x.fi << endl;
-        if(x.fi > dis[u])
-            continue;
+
+        u = cur.se;
+        //cout << "current working node:" << u << ", " << cur.fi << endl;
         if(u == n)
             break;
-        for(auto v: g[u]) {
-            ll tmp = dis[u] + v.se;
-            //cout << v.fi << " : " << tmp << endl;
-            if(tmp < dis[v.fi]) {
-                dis[v.fi] = tmp;
-                prev[v.fi] = u;
-                pq.push({tmp, v.fi});
+        if(dis[u] != cur.fi)
+            continue;
+        for(auto x: g[u]) {
+            ll tmp = dis[u] + x.se;
+            //cout << x.fi << " : " << tmp << endl;
+            if(tmp < dis[x.fi]) {
+                //cout << "relaxation" << endl;
+                dis[x.fi] = tmp;
+                prev[x.fi] = u;
+                pq.push({tmp, x.fi});
             }
         }
     }
@@ -63,7 +56,11 @@ int main() {
     for(int i = 1; i <= n; i++)
         cout << prev[i] << " ";
     cout << endl;
-  
+    
+    if(dis[n] == INF) {
+        cout << "-1\n";
+        return 0;
+    }
     v = prev[n];
     vector<int> path(1, n);
     while(v != 1) {
