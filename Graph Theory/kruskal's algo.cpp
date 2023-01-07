@@ -72,7 +72,7 @@ int main() {
         ll w = it.first;
         u = it.second.first;
         v = it.second.second;
-        cout << w << " " << u << " " << v << endl;
+        //cout << w << " " << u << " " << v << endl;
         if(ds.find_par(u) != ds.find_par(v)) {
             ds.union_by_size(u, v);
             totw += w;
